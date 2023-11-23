@@ -15,36 +15,41 @@ document.addEventListener('DOMContentLoaded', ()=>{
     
     let userComments = [];
 
-    // Add submit event listener to the form
     document.getElementById('comments-form').addEventListener('submit', function (event) {
-        event.preventDefault(); // Prevent the form from submitting traditionally
+        event.preventDefault(); 
 
-        // Get the values from the form
         let name = document.getElementById('name').value;
         let message = document.getElementById('comments-message').value;
+        if (name.trim() === '') {
+            highlightField('name');
+            return;
+        }
 
-        // Create a new comment element
+        if (message.trim() === '') {
+            highlightField('comments-message');
+            return;
+        }
+
+        removeHighlight('name');
+        removeHighlight('comments-message');
         let newComment = document.createElement('div');
         newComment.className = 'comments-item';
         newComment.innerHTML = '<h2 class="comments-item__name">' + name + '</h2>' +
             '<div class="comments-item__date">' + getCurrentDate() + '</div>' +
             '<div class="comments-item__message"><p>' + message + '</p></div>';
 
-        // Insert the new comment at the beginning of the comments-items
         let commentsItems = document.getElementById('comments-items');
         commentsItems.insertBefore(newComment, commentsItems.firstChild);
 
-        // Add the new comment to the userComments array
-        userComments.push(newComment.outerHTML);
+        userComments.unshift(newComment.outerHTML);
 
-        // Save userComments to localStorage
         saveCommentsToLocalStorage();
     });
 
     function getCurrentDate() {
         let date = new Date();
         let day = date.getDate();
-        let month = date.getMonth() + 1; // Months are zero-indexed
+        let month = date.getMonth() + 1;
         let year = date.getFullYear();
 
         return day + '.' + month + '.' + year;
@@ -61,23 +66,26 @@ document.addEventListener('DOMContentLoaded', ()=>{
     function loadCommentsFromLocalStorage() {
         let commentsItems = document.getElementById('comments-items');
         
-        // Load static comments from the HTML
         let staticComments = commentsItems.innerHTML;
 
-        // Load userComments from localStorage
         let userCommentsJson = localStorage.getItem('userComments');
 
         if (userCommentsJson) {
             userComments = JSON.parse(userCommentsJson);
-
-            // Combine static comments with userComments
             let allComments = userComments.concat(staticComments);
 
-            // Display all comments in the comments-items
             commentsItems.innerHTML = allComments.join('');
         }
     }
 
-    // Load comments from localStorage on page load
     loadCommentsFromLocalStorage();
 })
+function highlightField(fieldId) {
+    let field = document.getElementById(fieldId);
+    field.style.border = '2px solid #d16363';
+}
+
+function removeHighlight(fieldId) {
+    let field = document.getElementById(fieldId);
+    field.style.border = '';
+}
