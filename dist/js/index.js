@@ -52,6 +52,10 @@ document.addEventListener('DOMContentLoaded', ()=>{
             var commentsItems = document.getElementById('comments-items');
             var comments = commentsItems.innerHTML;
             localStorage.setItem('comments', comments);
+            var name = document.getElementById('name');
+            var message = document.getElementById('comments-message');
+            name.value = ''
+            message.value = ''
         }
 
         function loadCommentsFromLocalStorage() {
