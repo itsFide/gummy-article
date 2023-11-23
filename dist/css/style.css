@@ -1160,6 +1160,12 @@ body .menu-open {
   line-height: normal;
 }
 
+@media screen and (max-width: 1375px) {
+  .news-item-socials {
+    left: 105%;
+  }
+}
+
 @media screen and (max-width: 1220px) {
   .news-item-fixed {
     right: -80%;
@@ -1174,6 +1180,10 @@ body .menu-open {
   .news-item-fixed__img {
     width: 302px;
     height: 640px;
+  }
+
+  .news-item-socials {
+    left: 104%;
   }
 
   .footer__title {
