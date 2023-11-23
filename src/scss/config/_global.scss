@@ -1,5 +1,8 @@
 body{
     font-family: 'Open Sans', sans-serif;
+    & .menu-open{
+        overflow: hidden;
+    }
 }
 .container{
     max-width: 1210px;

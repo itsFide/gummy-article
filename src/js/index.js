@@ -12,59 +12,59 @@ document.addEventListener('DOMContentLoaded', ()=>{
     // Функция для добавления комментария
     let commentsForm = document.querySelector('.comments-form')
     
-        // Load existing comments from localStorage and display them
-        loadCommentsFromLocalStorage();
+    // Load existing comments from localStorage and display them
+    loadCommentsFromLocalStorage();
 
-        // Add submit event listener to the form
-        document.getElementById('comments-form').addEventListener('submit', function (event) {
-            event.preventDefault(); // Prevent the form from submitting traditionally
+    // Add submit event listener to the form
+    document.getElementById('comments-form').addEventListener('submit', function (event) {
+        event.preventDefault(); // Prevent the form from submitting traditionally
 
-            // Get the values from the form
-            var name = document.getElementById('name').value;
-            var message = document.getElementById('comments-message').value;
+        // Get the values from the form
+        var name = document.getElementById('name').value;
+        var message = document.getElementById('comments-message').value;
 
-            // Create a new comment element
-            var newComment = document.createElement('div');
-            newComment.className = 'comments-item';
-            newComment.innerHTML = '<h2 class="comments-item__name">' + name + '</h2>' +
-                '<div class="comments-item__date">' + getCurrentDate() + '</div>' +
-                '<div class="comments-item__message"><p>' + message + '</p></div>';
+        // Create a new comment element
+        var newComment = document.createElement('div');
+        newComment.className = 'comments-item';
+        newComment.innerHTML = '<h2 class="comments-item__name">' + name + '</h2>' +
+            '<div class="comments-item__date">' + getCurrentDate() + '</div>' +
+            '<div class="comments-item__message"><p>' + message + '</p></div>';
 
-            // Insert the new comment at the beginning of the comments-items
-            var commentsItems = document.getElementById('comments-items');
-            commentsItems.insertBefore(newComment, commentsItems.firstChild);
+        // Insert the new comment at the beginning of the comments-items
+        var commentsItems = document.getElementById('comments-items');
+        commentsItems.insertBefore(newComment, commentsItems.firstChild);
 
-            // Save comments to localStorage
-            saveCommentsToLocalStorage();
-        });
+        // Save comments to localStorage
+        saveCommentsToLocalStorage();
+    });
 
-        function getCurrentDate() {
-            var date = new Date();
-            var day = date.getDate();
-            var month = date.getMonth() + 1; // Months are zero-indexed
-            var year = date.getFullYear();
+    function getCurrentDate() {
+        var date = new Date();
+        var day = date.getDate();
+        var month = date.getMonth() + 1; // Months are zero-indexed
+        var year = date.getFullYear();
 
-            return day + '.' + month + '.' + year;
+        return day + '.' + month + '.' + year;
+    }
+
+    function saveCommentsToLocalStorage(e) {
+        e.preventDefault()
+        var commentsItems = document.getElementById('comments-items');
+        var comments = commentsItems.innerHTML;
+        localStorage.setItem('comments', comments);
+        var name = document.getElementById('name');
+        var message = document.getElementById('comments-message');
+        name.value = ''
+        message.value = ''
+    }
+
+    function loadCommentsFromLocalStorage() {
+        var commentsItems = document.getElementById('comments-items');
+        var comments = localStorage.getItem('comments');
+
+        if (comments) {
+            commentsItems.innerHTML = comments;
         }
-
-        function saveCommentsToLocalStorage(e) {
-            e.preventDefault()
-            var commentsItems = document.getElementById('comments-items');
-            var comments = commentsItems.innerHTML;
-            localStorage.setItem('comments', comments);
-            var name = document.getElementById('name');
-            var message = document.getElementById('comments-message');
-            name.value = ''
-            message.value = ''
-        }
-
-        function loadCommentsFromLocalStorage() {
-            var commentsItems = document.getElementById('comments-items');
-            var comments = localStorage.getItem('comments');
-
-            if (comments) {
-                commentsItems.innerHTML = comments;
-            }
-        }
+    }
     commentsForm.addEventListener('submit',saveCommentsToLocalStorage)
 })
